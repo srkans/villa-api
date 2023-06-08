@@ -3,6 +3,7 @@ using MagicVilla.VillaAPI.Models;
 using MagicVilla.VillaAPI.Models.DTO;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MagicVilla.VillaAPI.Controllers
 {
@@ -150,7 +151,7 @@ namespace MagicVilla.VillaAPI.Controllers
                 return BadRequest();
             }
 
-            Villa? villa = _db.Villas.FirstOrDefault(temp => temp.Id == id);
+            Villa? villa = _db.Villas.AsNoTracking().FirstOrDefault(temp => temp.Id == id);
 
             if(villa == null)
             {
@@ -183,13 +184,13 @@ namespace MagicVilla.VillaAPI.Controllers
                 Amenity = villaDTO.Amenity
             };
 
-            _db.Villas.Update(model);//update hepsini güncelliyor bunun yerine sadece 1 satırı güncellemek için stored proc kullan
-            _db.SaveChanges();
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
+            _db.Villas.Update(model);//update hepsini güncelliyor bunun yerine sadece 1 satırı güncellemek için stored proc kullan
+            _db.SaveChanges();
 
             return NoContent();
         }
