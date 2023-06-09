@@ -17,10 +17,12 @@ namespace MagicVilla.VillaAPI.Controllers
     {
         protected APIResponse _response;
         private readonly IVillaNumberRepository _dbVillaNumber;
+        private readonly IVillaRepository _dbVilla;
         private readonly IMapper _mapper;
-        public VillaNumberAPIController(IVillaNumberRepository dbVillaNumber, IMapper mapper)
+        public VillaNumberAPIController(IVillaNumberRepository dbVillaNumber, IVillaRepository dbVilla, IMapper mapper)
         {
             _dbVillaNumber = dbVillaNumber;
+            _dbVilla = dbVilla;
             _mapper = mapper;
             this._response = new APIResponse();
         }
@@ -89,6 +91,13 @@ namespace MagicVilla.VillaAPI.Controllers
                 if (await _dbVillaNumber.GetAsync(temp => temp.VillaNo == createDTO.VillaNo) != null)
                 {
                     _response.ErrorMessages = new List<string>() { "Villa number already exists!" };
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    return BadRequest(_response);
+                }
+
+                if(await _dbVilla.GetAsync(temp => temp.Id == createDTO.VillaID)==null)
+                {
+                    _response.ErrorMessages = new List<string>() { "Villa ID is invalid!" };
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
                 }
@@ -165,58 +174,16 @@ namespace MagicVilla.VillaAPI.Controllers
                     return BadRequest(_response);
                 }
 
+                if (await _dbVilla.GetAsync(temp => temp.Id == updateDTO.VillaID) == null)
+                {
+                    _response.ErrorMessages = new List<string>() { "Villa ID is invalid!" };
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    return BadRequest(_response);
+                }
+
                 VillaNumber villaNumber = _mapper.Map<VillaNumber>(updateDTO);
 
                 await _dbVillaNumber.UpdateAsync(villaNumber);
-
-                _response.StatusCode = HttpStatusCode.NoContent;
-                _response.IsSuccess = true;
-                return Ok(_response);
-            }
-            catch (Exception ex)
-            {
-                _response.IsSuccess = false;
-                _response.ErrorMessages = new List<string> { ex.ToString() };
-            }
-            return _response;
-        }
-
-        [HttpPatch("[action]/{id:int}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<APIResponse>> UpdatePartialVillaNumber(int id, JsonPatchDocument<VillaNumberUpdateDTO> patchDTO)
-        {
-            try
-            {
-                if (patchDTO == null || id == 0)
-                {
-                    _response.StatusCode = HttpStatusCode.BadRequest;
-                    return BadRequest(_response);
-                }
-
-                VillaNumber? villaNumber = await _dbVillaNumber.GetAsync(temp => temp.VillaNo == id, tracked: false);
-
-                VillaNumberUpdateDTO villaNumberDTO = _mapper.Map<VillaNumberUpdateDTO>(villaNumber);
-
-                if (villaNumber == null)
-                {
-                    _response.StatusCode = HttpStatusCode.NotFound;
-                    return NotFound(_response);
-                }
-
-                patchDTO.ApplyTo(villaNumberDTO, ModelState);
-
-                VillaNumber model = _mapper.Map<VillaNumber>(villaNumberDTO);
-
-                await _dbVillaNumber.UpdateAsync(model);//stored proc kullan
-
-                if (!ModelState.IsValid)
-                {
-                    _response.StatusCode = HttpStatusCode.BadRequest;
-                    _response.Result = ModelState;
-                    return BadRequest(_response);
-                }
 
                 _response.StatusCode = HttpStatusCode.NoContent;
                 _response.IsSuccess = true;
