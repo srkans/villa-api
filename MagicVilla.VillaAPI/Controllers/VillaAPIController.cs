@@ -2,7 +2,7 @@
 using MagicVilla.VillaAPI.Data;
 using MagicVilla.VillaAPI.Models;
 using MagicVilla.VillaAPI.Models.DTO;
-using MagicVilla.VillaAPI.Repository;
+using MagicVilla.VillaAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
