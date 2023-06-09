@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v7.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v7.0": {
+      "MagicVilla.Web/1.0.0": {
+        "runtime": {
+          "MagicVilla.Web.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "MagicVilla.Web/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
