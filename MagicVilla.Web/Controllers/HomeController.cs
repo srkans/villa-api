@@ -1,21 +1,37 @@
-﻿using MagicVilla.Web.Models;
+﻿using AutoMapper;
+using MagicVilla.Web.Models;
+using MagicVilla.Web.Models.DTO;
+using MagicVilla.Web.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace MagicVilla.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IVillaService _villaService;
+        private readonly IMapper _mapper;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IVillaService villaService, IMapper mapper)
         {
-            _logger = logger;
+            _mapper = mapper;
+            _villaService = villaService;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            return View();
+            List<VillaDTO> list = new List<VillaDTO>();
+
+            var response = await _villaService.GetAllAsync<APIResponse>();
+
+            if (response != null && response.IsSuccess)
+            {
+                list = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(response.Result));
+            }
+
+            return View(list);
         }
 
         public IActionResult Privacy()

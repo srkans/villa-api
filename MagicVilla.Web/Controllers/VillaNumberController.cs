@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using MagicVilla.Web.Models;
 using MagicVilla.Web.Models.DTO;
+using MagicVilla.Web.Models.VM;
 using MagicVilla.Web.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Reflection;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MagicVilla.Web.Controllers
 {
@@ -13,11 +15,13 @@ namespace MagicVilla.Web.Controllers
     public class VillaNumberController : Controller
     {
         private readonly IVillaNumberService _villaNumberService;
+        private readonly IVillaService _villaService;
         private readonly IMapper _mapper;
 
-        public VillaNumberController(IVillaNumberService villaNumberService, IMapper mapper)
+        public VillaNumberController(IVillaNumberService villaNumberService, IVillaService villaService, IMapper mapper)
         {
             _mapper = mapper;
+            _villaService = villaService;
             _villaNumberService = villaNumberService;
         }
 
@@ -41,17 +45,30 @@ namespace MagicVilla.Web.Controllers
         [Route("[action]")]
         public async Task<IActionResult> CreateVillaNumber()
         {
-            return View();
+            VillaNumberCreateVM villaNumberVM = new();
+
+            var response = await _villaService.GetAllAsync<APIResponse>();
+
+            if (response != null && response.IsSuccess)
+            {
+                villaNumberVM.VillaList = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(response.Result)).Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                });
+            }
+
+            return View(villaNumberVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("[action]")]
-        public async Task<IActionResult> CreateVillaNumber(VillaNumberCreateDTO model)
+        public async Task<IActionResult> CreateVillaNumber(VillaNumberCreateVM model)
         {
             if (ModelState.IsValid)
             {
-                var response = await _villaNumberService.CreateAsync<APIResponse>(model);
+                var response = await _villaNumberService.CreateAsync<APIResponse>(model.VillaNumber);
 
                 if (response != null && response.IsSuccess)
                 {
