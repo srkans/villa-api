@@ -5,10 +5,11 @@ using MagicVilla.Web.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace MagicVilla.Web.Controllers
 {
-
+    [Route("[controller]")]
     public class VillaController : Controller
     {
         private readonly IVillaService _villaService;
@@ -19,7 +20,9 @@ namespace MagicVilla.Web.Controllers
             _mapper = mapper;
             _villaService = villaService;
         }
+
         [HttpGet]
+        [Route("[action]")]
         public async Task<IActionResult> IndexVilla()
         {
             List<VillaDTO> list = new List<VillaDTO>();
@@ -33,7 +36,9 @@ namespace MagicVilla.Web.Controllers
 
             return View(list);
         }
+
         [HttpGet]
+        [Route("[action]")]
         public async Task<IActionResult> CreateVilla()
         {
             return View();
@@ -41,11 +46,46 @@ namespace MagicVilla.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("[action]")]
         public async Task<IActionResult> CreateVilla(VillaCreateDTO model)
         {
             if (ModelState.IsValid)
             {
                 var response = await _villaService.CreateAsync<APIResponse>(model);
+
+                if (response != null && response.IsSuccess)
+                {
+                    return RedirectToAction(nameof(IndexVilla));
+                }
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> UpdateVilla(int villaId)
+        {
+
+            var response = await _villaService.GetAsync<APIResponse>(villaId);
+
+            if (response != null && response.IsSuccess)
+            {
+                VillaDTO model = JsonConvert.DeserializeObject<VillaDTO>(Convert.ToString(response.Result));
+                return View(_mapper.Map<VillaUpdateDTO>(model));
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("[action]")]
+        public async Task<IActionResult> UpdateVilla(VillaUpdateDTO model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await _villaService.UpdateAsync<APIResponse>(model);
 
                 if (response != null && response.IsSuccess)
                 {
