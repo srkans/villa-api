@@ -29,3 +29,9 @@ F:\villa-api\MagicVilla.Web\obj\Debug\net7.0\refint\MagicVilla.Web.dll
 F:\villa-api\MagicVilla.Web\obj\Debug\net7.0\MagicVilla.Web.pdb
 F:\villa-api\MagicVilla.Web\obj\Debug\net7.0\MagicVilla.Web.genruntimeconfig.cache
 F:\villa-api\MagicVilla.Web\obj\Debug\net7.0\ref\MagicVilla.Web.dll
+F:\villa-api\MagicVilla.Web\bin\Debug\net7.0\AutoMapper.dll
+F:\villa-api\MagicVilla.Web\bin\Debug\net7.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+F:\villa-api\MagicVilla.Web\bin\Debug\net7.0\Newtonsoft.Json.dll
+F:\villa-api\MagicVilla.Web\bin\Debug\net7.0\MagicVilla.Utility.dll
+F:\villa-api\MagicVilla.Web\bin\Debug\net7.0\MagicVilla.Utility.pdb
+F:\villa-api\MagicVilla.Web\obj\Debug\net7.0\MagicVilla.Web.csproj.CopyComplete
