@@ -1,0 +1,12 @@
+F:\villa-api\MagicVilla.Utility\bin\Debug\net7.0\MagicVilla.Utility.deps.json
+F:\villa-api\MagicVilla.Utility\bin\Debug\net7.0\MagicVilla.Utility.dll
+F:\villa-api\MagicVilla.Utility\bin\Debug\net7.0\MagicVilla.Utility.pdb
+F:\villa-api\MagicVilla.Utility\obj\Debug\net7.0\MagicVilla.Utility.csproj.AssemblyReference.cache
+F:\villa-api\MagicVilla.Utility\obj\Debug\net7.0\MagicVilla.Utility.GeneratedMSBuildEditorConfig.editorconfig
+F:\villa-api\MagicVilla.Utility\obj\Debug\net7.0\MagicVilla.Utility.AssemblyInfoInputs.cache
+F:\villa-api\MagicVilla.Utility\obj\Debug\net7.0\MagicVilla.Utility.AssemblyInfo.cs
+F:\villa-api\MagicVilla.Utility\obj\Debug\net7.0\MagicVilla.Utility.csproj.CoreCompileInputs.cache
+F:\villa-api\MagicVilla.Utility\obj\Debug\net7.0\MagicVilla.Utility.dll
+F:\villa-api\MagicVilla.Utility\obj\Debug\net7.0\refint\MagicVilla.Utility.dll
+F:\villa-api\MagicVilla.Utility\obj\Debug\net7.0\MagicVilla.Utility.pdb
+F:\villa-api\MagicVilla.Utility\obj\Debug\net7.0\ref\MagicVilla.Utility.dll
