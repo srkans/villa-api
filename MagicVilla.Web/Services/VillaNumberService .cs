@@ -15,50 +15,55 @@ namespace MagicVilla.Web.Services
             _villaNumberUrl = configuration.GetValue<string>("ServiceUrls:VillaAPI");
         }
 
-        public Task<T> CreateAsync<T>(VillaNumberCreateDTO dto)
+        public Task<T> CreateAsync<T>(VillaNumberCreateDTO dto, string token)
         {
             return SendAsync<T>(new APIRequest() 
             { 
                 ApiType = StaticDetails.ApiType.POST,
                 Data = dto,
-                Url = _villaNumberUrl+"/api/VillaNumberAPI"+ "/CreateVillaNumber"
+                Url = _villaNumberUrl+"/api/VillaNumberAPI"+ "/CreateVillaNumber",
+                Token = token
             });
         }
 
-        public Task<T> DeleteAsync<T>(int id)
+        public Task<T> DeleteAsync<T>(int id, string token)
         {
             return SendAsync<T>(new APIRequest()
             {
                 ApiType = StaticDetails.ApiType.DELETE,
-                Url = _villaNumberUrl + "/api/VillaNumberAPI" + "/DeleteVillaNumber/" + id
+                Url = _villaNumberUrl + "/api/VillaNumberAPI" + "/DeleteVillaNumber/" + id,
+                Token = token
             });
         }
 
-        public Task<T> GetAllAsync<T>()
+        public Task<T> GetAllAsync<T>(string token)
         {
             return SendAsync<T>(new APIRequest()
             {
                 ApiType = StaticDetails.ApiType.GET,
-                Url = _villaNumberUrl + "/api/VillaNumberAPI" + "/GetVillaNumbers"
+                Url = _villaNumberUrl + "/api/VillaNumberAPI" + "/GetVillaNumbers",
+                Token = token
             });
         }
 
-        public Task<T> GetAsync<T>(int id)
+        public Task<T> GetAsync<T>(int id, string token)
         {
             return SendAsync<T>(new APIRequest()
             {
                 ApiType = StaticDetails.ApiType.GET,
-                Url = _villaNumberUrl + "/api/VillaNumberAPI" + "/GetVillaNumber/" + id
+                Url = _villaNumberUrl + "/api/VillaNumberAPI" + "/GetVillaNumber/" + id,
+                Token = token
             });
         }
 
-        public Task<T> UpdateAsync<T>(VillaNumberUpdateDTO dto)
+        public Task<T> UpdateAsync<T>(VillaNumberUpdateDTO dto, string token)
         {
             return SendAsync<T>(new APIRequest()
             {
                 ApiType = StaticDetails.ApiType.PUT,
                 Data = dto,
-                Url = _villaNumberUrl + "/api/VillaNumberAPI" + "/UpdateVillaNumber/" + dto.VillaNo
+                Url = _villaNumberUrl + "/api/VillaNumberAPI" + "/UpdateVillaNumber/" + dto.VillaNo,
+                Token = token
             });
         }
     }

@@ -27,7 +27,6 @@ namespace MagicVilla.VillaAPI.Controllers
         }
 
         [HttpGet("[action]")]
-        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<APIResponse>> GetVillas()
         {
@@ -47,7 +46,6 @@ namespace MagicVilla.VillaAPI.Controllers
         }
 
         [HttpGet("[action]/{id:int}", Name = "GetVilla")]
-        [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -120,7 +118,7 @@ namespace MagicVilla.VillaAPI.Controllers
         }
 
         [HttpDelete("[action]/{id:int}", Name = "DeleteVilla")]
-        [Authorize(Roles = "CUSTOM")]
+        [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

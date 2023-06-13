@@ -49,7 +49,14 @@ namespace MagicVilla.Web.Services
                         break;
                 }
 
-                HttpResponseMessage apiResponse = await client.SendAsync(message);
+                HttpResponseMessage apiResponse = null;
+
+                if (!string.IsNullOrEmpty(apiRequest.Token))
+                {
+                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiRequest.Token);
+                }
+
+                apiResponse = await client.SendAsync(message);
 
                 var apiContent = await apiResponse.Content.ReadAsStringAsync();
 
