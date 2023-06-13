@@ -28,6 +28,7 @@ namespace MagicVilla.VillaAPI.Controllers.v1
         }
 
         [HttpGet("[action]")]
+        [ResponseCache(CacheProfileName ="Default30")] // 30saniye boyunca cachle ile cevap ver sonra action method ile database'den cek
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<APIResponse>> GetVillas()
         {

@@ -16,6 +16,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
 
+builder.Services.AddResponseCaching();
+
 builder.Services.AddScoped<IVillaRepository, VillaRepository>();
 builder.Services.AddScoped<IVillaNumberRepository, VillaNumberRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -53,7 +55,10 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddControllers(option =>
 {
-   // option.ReturnHttpNotAcceptable = true;
+    option.CacheProfiles.Add("Default30", new Microsoft.AspNetCore.Mvc.CacheProfile()
+    {
+        Duration = 30       
+    });
 }).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
 
 
