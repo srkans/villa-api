@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using System.Text.Json;
 
 namespace MagicVilla.VillaAPI.Controllers.v1
 {
@@ -30,7 +31,7 @@ namespace MagicVilla.VillaAPI.Controllers.v1
         [HttpGet("[action]")]
         [ResponseCache(CacheProfileName ="Default30")] 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<APIResponse>> GetVillas([FromQuery]int? occupancy, [FromQuery]string? search)
+        public async Task<ActionResult<APIResponse>> GetVillas([FromQuery]int? occupancy, [FromQuery]string? search, int pageSize=2, int pageNumber=1)
         {
             try
             {
@@ -38,17 +39,25 @@ namespace MagicVilla.VillaAPI.Controllers.v1
 
                 if (occupancy > 0)
                 {
-                    villaList = await _dbVilla.GetAllAsync(x => x.Occupancy == occupancy);
+                    villaList = await _dbVilla.GetAllAsync(x => x.Occupancy == occupancy, pageSize:pageSize, pageNumber:pageNumber);
                 }
                 else
                 {
-                    villaList = await _dbVilla.GetAllAsync();
+                    villaList = await _dbVilla.GetAllAsync(pageSize:pageSize, pageNumber: pageNumber);
                 }
+
                 if(!string.IsNullOrEmpty(search))
                 {
                     villaList = villaList.Where(u => u.Name.ToLower().Contains(search));
                 }
-                                       
+
+                Pagination pagination = new Pagination()
+                {
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+
+                Response.Headers.Add("X-Pagination",JsonSerializer.Serialize(pagination));                
                 _response.Result = _mapper.Map<List<VillaDTO>>(villaList);
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
