@@ -3,6 +3,7 @@ using MagicVilla.VillaAPI.Data;
 using MagicVilla.VillaAPI.Models;
 using MagicVilla.VillaAPI.Models.DTO;
 using MagicVilla.VillaAPI.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,7 @@ namespace MagicVilla.VillaAPI.Controllers
         }
 
         [HttpGet("[action]")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<APIResponse>> GetVillas()
         {
@@ -45,6 +47,7 @@ namespace MagicVilla.VillaAPI.Controllers
         }
 
         [HttpGet("[action]/{id:int}", Name = "GetVilla")]
+        [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -79,6 +82,7 @@ namespace MagicVilla.VillaAPI.Controllers
         }
 
         [HttpPost("[action]")]
+        [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -116,6 +120,7 @@ namespace MagicVilla.VillaAPI.Controllers
         }
 
         [HttpDelete("[action]/{id:int}", Name = "DeleteVilla")]
+        [Authorize(Roles = "CUSTOM")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -152,6 +157,7 @@ namespace MagicVilla.VillaAPI.Controllers
         }
 
         [HttpPut("[action]/{id:int}")]
+        [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<APIResponse>> UpdateVilla(int id, [FromBody] VillaUpdateDTO updateDTO)
