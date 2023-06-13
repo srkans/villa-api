@@ -28,13 +28,23 @@ namespace MagicVilla.VillaAPI.Controllers.v1
         }
 
         [HttpGet("[action]")]
-        [ResponseCache(CacheProfileName ="Default30")] // 30saniye boyunca cachle ile cevap ver sonra action method ile database'den cek
+        [ResponseCache(CacheProfileName ="Default30")] 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<APIResponse>> GetVillas()
+        public async Task<ActionResult<APIResponse>> GetVillas([FromQuery]int? occupancy)
         {
             try
             {
-                IEnumerable<Villa> villaList = await _dbVilla.GetAllAsync();
+                IEnumerable<Villa> villaList;
+
+                if (occupancy > 0)
+                {
+                    villaList = await _dbVilla.GetAllAsync(x => x.Occupancy == occupancy);
+                }
+                else
+                {
+                    villaList = await _dbVilla.GetAllAsync();
+                }
+                                       
                 _response.Result = _mapper.Map<List<VillaDTO>>(villaList);
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
