@@ -31,7 +31,7 @@ namespace MagicVilla.VillaAPI.Controllers.v1
         [HttpGet("[action]")]
         [ResponseCache(CacheProfileName ="Default30")] 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<APIResponse>> GetVillas([FromQuery]int? occupancy, [FromQuery]string? search, int pageSize=2, int pageNumber=1)
+        public async Task<ActionResult<APIResponse>> GetVillas([FromQuery]int? occupancy, [FromQuery]string? search, int pageSize=0, int pageNumber=1)
         {
             try
             {
@@ -81,6 +81,7 @@ namespace MagicVilla.VillaAPI.Controllers.v1
                 if (id == 0)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccess = false;
                     return BadRequest(_response);
                 }
 
@@ -89,6 +90,7 @@ namespace MagicVilla.VillaAPI.Controllers.v1
                 if (villa == null)
                 {
                     _response.StatusCode = HttpStatusCode.NotFound;
+                    _response.IsSuccess = false;
                     return NotFound(_response);
                 }
 
@@ -116,12 +118,14 @@ namespace MagicVilla.VillaAPI.Controllers.v1
                 if (await _dbVilla.GetAsync(temp => temp.Name.ToLower() == createDTO.Name.ToLower()) != null)
                 {
                     ModelState.AddModelError("ErrorMessages", "Villa already exists!");
+                    _response.IsSuccess = false;
                     return BadRequest(ModelState);
                 }
 
                 if (createDTO == null)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccess = false;
                     _response.Result = createDTO;
                     return BadRequest(_response);
                 }
@@ -154,6 +158,7 @@ namespace MagicVilla.VillaAPI.Controllers.v1
                 if (id == 0)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccess = false;
                     return BadRequest(_response);
                 }
 
@@ -162,6 +167,7 @@ namespace MagicVilla.VillaAPI.Controllers.v1
                 if (villa == null)
                 {
                     _response.StatusCode = HttpStatusCode.NotFound;
+                    _response.IsSuccess = false;
                     return NotFound(_response);
                 }
 
@@ -190,6 +196,7 @@ namespace MagicVilla.VillaAPI.Controllers.v1
                 if (updateDTO == null || id != updateDTO.Id)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccess = false;
                     return BadRequest(_response);
                 }
 
@@ -220,6 +227,7 @@ namespace MagicVilla.VillaAPI.Controllers.v1
                 if (patchDTO == null || id == 0)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccess = false;
                     return BadRequest(_response);
                 }
 
@@ -230,6 +238,7 @@ namespace MagicVilla.VillaAPI.Controllers.v1
                 if (villa == null)
                 {
                     _response.StatusCode = HttpStatusCode.NotFound;
+                    _response.IsSuccess = false;
                     return NotFound(_response);
                 }
 
@@ -242,6 +251,7 @@ namespace MagicVilla.VillaAPI.Controllers.v1
                 if (!ModelState.IsValid)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccess = false;
                     _response.Result = ModelState;
                     return BadRequest(_response);
                 }
