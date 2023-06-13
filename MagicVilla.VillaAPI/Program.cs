@@ -22,6 +22,18 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 
+builder.Services.AddApiVersioning(options =>
+{
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+    options.ReportApiVersions = true;
+});
+builder.Services.AddVersionedApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
+});
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -71,6 +83,40 @@ builder.Services.AddSwaggerGen(options =>
             new List<string>()
         }
     });
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1.0",
+        Title = "Magic Villa",
+        Description = "API to manage villa",
+        TermsOfService = new Uri("https://www.example.com/terms"),
+        Contact = new OpenApiContact
+        {
+            Name = "Serkan",
+            Url = new Uri("https://www.github.com/srkans")
+        },
+        License = new OpenApiLicense
+        {
+            Name = "Example License",
+            Url = new Uri("https://www.google.com")
+        }
+    });
+    options.SwaggerDoc("v2", new OpenApiInfo
+    {
+        Version = "v2.0",
+        Title = "Magic Villa V2",
+        Description = "API to manage villa",
+        TermsOfService = new Uri("https://www.example.com/terms"),
+        Contact = new OpenApiContact
+        {
+            Name = "Serkan",
+            Url = new Uri("https://www.github.com/srkans")
+        },
+        License = new OpenApiLicense
+        {
+            Name = "Example License",
+            Url = new Uri("https://www.google.com")
+        }
+    });
 });
 
 var app = builder.Build();
@@ -79,7 +125,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "MagicVillaV1");
+        options.SwaggerEndpoint("/swagger/v2/swagger.json", "MagicVillaV2");
+    });
 }
 
 app.UseHttpsRedirection();

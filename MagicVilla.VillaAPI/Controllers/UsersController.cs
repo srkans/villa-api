@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace MagicVilla.VillaAPI.Controllers
 {
     [ApiController]
-    [Route("api/UsersAuth")]
+    [Route("api/v{version:apiVersion}/UsersAuth")]
+    [ApiVersionNeutral]
     public class UsersController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
@@ -15,15 +16,15 @@ namespace MagicVilla.VillaAPI.Controllers
         public UsersController(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            this._response = new APIResponse();
+            _response = new APIResponse();
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody]LoginRequestDTO model)
+        public async Task<IActionResult> Login([FromBody] LoginRequestDTO model)
         {
             var loginResponse = await _userRepository.Login(model);
 
-            if (loginResponse.User == null || String.IsNullOrEmpty(loginResponse.Token))
+            if (loginResponse.User == null || string.IsNullOrEmpty(loginResponse.Token))
             {
                 _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
                 _response.IsSuccess = false;
@@ -53,7 +54,7 @@ namespace MagicVilla.VillaAPI.Controllers
 
             var user = _userRepository.Register(model);
 
-            if(user==null)
+            if (user == null)
             {
                 _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
                 _response.IsSuccess = false;

@@ -11,10 +11,11 @@ using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Net;
 
-namespace MagicVilla.VillaAPI.Controllers
+namespace MagicVilla.VillaAPI.Controllers.v1
 {
     [ApiController]
-    [Route("api/VillaNumberAPI")]
+    [Route("api/v{version:apiVersion}/VillaNumberAPI")]
+    [ApiVersion("1.0")]
     public class VillaNumberAPIController : ControllerBase
     {
         protected APIResponse _response;
@@ -26,7 +27,13 @@ namespace MagicVilla.VillaAPI.Controllers
             _dbVillaNumber = dbVillaNumber;
             _dbVilla = dbVilla;
             _mapper = mapper;
-            this._response = new APIResponse();
+            _response = new APIResponse();
+        }
+
+        [HttpGet("GetString")]
+        public IEnumerable<string> Get() 
+        {
+            return new string[] { "Betul", "Sacma" };
         }
 
         [HttpGet("[action]")]
@@ -35,7 +42,7 @@ namespace MagicVilla.VillaAPI.Controllers
         {
             try
             {
-                IEnumerable<VillaNumber> villaNumberList = await _dbVillaNumber.GetAllAsync(includeProperties:"Villa");
+                IEnumerable<VillaNumber> villaNumberList = await _dbVillaNumber.GetAllAsync(includeProperties: "Villa");
                 _response.Result = _mapper.Map<List<VillaNumberDTO>>(villaNumberList);
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
@@ -97,7 +104,7 @@ namespace MagicVilla.VillaAPI.Controllers
                     return BadRequest(ModelState);
                 }
 
-                if(await _dbVilla.GetAsync(temp => temp.Id == createDTO.VillaID)==null)
+                if (await _dbVilla.GetAsync(temp => temp.Id == createDTO.VillaID) == null)
                 {
                     ModelState.AddModelError("ErrorMessages", "Villa id is invalid!");
                     return BadRequest(ModelState);
@@ -141,7 +148,7 @@ namespace MagicVilla.VillaAPI.Controllers
                     return BadRequest(_response);
                 }
 
-                VillaNumber? villaNumber = await _dbVillaNumber.GetAsync(temp => temp.VillaNo == id);
+                VillaNumber villaNumber = await _dbVillaNumber.GetAsync(temp => temp.VillaNo == id);
 
                 if (villaNumber == null)
                 {

@@ -10,10 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 
-namespace MagicVilla.VillaAPI.Controllers
+namespace MagicVilla.VillaAPI.Controllers.v1
 {
     [ApiController]
-    [Route("api/VillaAPI")]
+    [Route("api/v{version:apiVersion}/VillaAPI")]
+    [ApiVersion("1.0")]
     public class VillaAPIController : ControllerBase
     {
         protected APIResponse _response;
@@ -23,7 +24,7 @@ namespace MagicVilla.VillaAPI.Controllers
         {
             _dbVilla = dbVilla;
             _mapper = mapper;
-            this._response = new APIResponse();
+            _response = new APIResponse();
         }
 
         [HttpGet("[action]")]
@@ -132,7 +133,7 @@ namespace MagicVilla.VillaAPI.Controllers
                     return BadRequest(_response);
                 }
 
-                Villa? villa = await _dbVilla.GetAsync(temp => temp.Id == id);
+                Villa villa = await _dbVilla.GetAsync(temp => temp.Id == id);
 
                 if (villa == null)
                 {
@@ -198,7 +199,7 @@ namespace MagicVilla.VillaAPI.Controllers
                     return BadRequest(_response);
                 }
 
-                Villa? villa = await _dbVilla.GetAsync(temp => temp.Id == id, tracked: false);
+                Villa villa = await _dbVilla.GetAsync(temp => temp.Id == id, tracked: false);
 
                 VillaUpdateDTO villaDTO = _mapper.Map<VillaUpdateDTO>(villa);
 
