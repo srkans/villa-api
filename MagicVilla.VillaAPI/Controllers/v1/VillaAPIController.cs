@@ -30,7 +30,7 @@ namespace MagicVilla.VillaAPI.Controllers.v1
         [HttpGet("[action]")]
         [ResponseCache(CacheProfileName ="Default30")] 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<APIResponse>> GetVillas([FromQuery]int? occupancy)
+        public async Task<ActionResult<APIResponse>> GetVillas([FromQuery]int? occupancy, [FromQuery]string? search)
         {
             try
             {
@@ -43,6 +43,10 @@ namespace MagicVilla.VillaAPI.Controllers.v1
                 else
                 {
                     villaList = await _dbVilla.GetAllAsync();
+                }
+                if(!string.IsNullOrEmpty(search))
+                {
+                    villaList = villaList.Where(u => u.Name.ToLower().Contains(search));
                 }
                                        
                 _response.Result = _mapper.Map<List<VillaDTO>>(villaList);
