@@ -35,3 +35,8 @@ F:\villa-api\MagicVilla.Web\bin\Debug\net7.0\Newtonsoft.Json.dll
 F:\villa-api\MagicVilla.Web\bin\Debug\net7.0\MagicVilla.Utility.dll
 F:\villa-api\MagicVilla.Web\bin\Debug\net7.0\MagicVilla.Utility.pdb
 F:\villa-api\MagicVilla.Web\obj\Debug\net7.0\MagicVilla.Web.csproj.CopyComplete
+F:\villa-api\MagicVilla.Web\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
+F:\villa-api\MagicVilla.Web\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
+F:\villa-api\MagicVilla.Web\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
+F:\villa-api\MagicVilla.Web\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
+F:\villa-api\MagicVilla.Web\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll

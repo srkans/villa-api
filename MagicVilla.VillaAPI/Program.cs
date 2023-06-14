@@ -1,26 +1,35 @@
 using MagicVilla.VillaAPI;
 using MagicVilla.VillaAPI.Data;
-using MagicVilla.VillaAPI.Repository;
 using MagicVilla.VillaAPI.Repository.IRepository;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using MagicVilla.VillaAPI.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using System.Text;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using MagicVilla.VillaAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+
+builder.Services.AddScoped<IVillaRepository, VillaRepository>();
+builder.Services.AddScoped<IVillaNumberRepository, VillaNumberRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
 
-builder.Services.AddResponseCaching();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-builder.Services.AddScoped<IVillaRepository, VillaRepository>();
-builder.Services.AddScoped<IVillaNumberRepository, VillaNumberRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddResponseCaching();
 
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 
