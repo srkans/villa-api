@@ -90,15 +90,16 @@ namespace MagicVilla.VillaAPI.Repository
             {
                 UserName = registerationRequestDTO.UserName,
                 Email = registerationRequestDTO.UserName,
+                NormalizedEmail = registerationRequestDTO.UserName.ToUpper(),
                 Name = registerationRequestDTO.Name
             };
 
             try
-            {            
+            {
                 var result = await _userManager.CreateAsync(user, registerationRequestDTO.Password);
                 if (result.Succeeded)
                 {
-                    if (!(await _roleManager.RoleExistsAsync("admin")))
+                    if (!_roleManager.RoleExistsAsync("admin").GetAwaiter().GetResult())
                     {
                         await _roleManager.CreateAsync(new IdentityRole("admin"));
                         await _roleManager.CreateAsync(new IdentityRole("customer"));

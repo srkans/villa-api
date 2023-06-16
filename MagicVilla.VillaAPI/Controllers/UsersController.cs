@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MagicVilla.VillaAPI.Controllers
 {
-    [ApiController]
     [Route("api/v{version:apiVersion}/UsersAuth")]
+    [ApiController]
     [ApiVersionNeutral]
-    public class UsersController : ControllerBase
+    public class UsersController : Controller
     {
         private readonly IUserRepository _userRepository;
         private APIResponse _response;
@@ -52,7 +52,7 @@ namespace MagicVilla.VillaAPI.Controllers
                 return BadRequest(_response);
             }
 
-            var user = _userRepository.Register(model);
+            var user = await _userRepository.Register(model);
 
             if (user == null)
             {
