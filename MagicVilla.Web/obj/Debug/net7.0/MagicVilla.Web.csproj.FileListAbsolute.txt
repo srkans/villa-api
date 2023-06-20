@@ -40,3 +40,5 @@ F:\villa-api\MagicVilla.Web\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebToke
 F:\villa-api\MagicVilla.Web\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
 F:\villa-api\MagicVilla.Web\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
 F:\villa-api\MagicVilla.Web\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
+F:\villa-api\MagicVilla.Web\bin\Debug\net7.0\Pipelines.Sockets.Unofficial.dll
+F:\villa-api\MagicVilla.Web\bin\Debug\net7.0\StackExchange.Redis.dll
